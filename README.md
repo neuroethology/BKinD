@@ -2,9 +2,8 @@
 Image
 
 Implementation from the paper:
-```
-Jennifer J. Sun*, Serim Ryou*, Roni Goldshmid, Brandon Weissbourd, John Dabiri, David J. Anderson, Ann Kennedy, Yisong Yue, Pietro Perona, [Self-Supervised Keypoint Discovery in Behavioral Videos] (https://arxiv.org/pdf/2112.05121.pdf). In Conference on Computer Vision and Pattern Recognition (CVPR), 2022
-```
+>Jennifer J. Sun*, Serim Ryou*, Roni Goldshmid, Brandon Weissbourd, John Dabiri, David J. Anderson, Ann Kennedy, Yisong Yue, Pietro Perona, [Self-Supervised Keypoint Discovery in Behavioral Videos](https://arxiv.org/pdf/2112.05121.pdf). In Conference on Computer Vision and Pattern Recognition (CVPR), 2022
+
 B-KinD discovers keypoints without the need for bounding box annotations or manual keypoint, and works on a range of organisms including mice, humans, flies, jellyfish and tree. The discovered keypoints and additional shape features are directly applicable to downstream tasks including behavior classification and pose regression!
 
 PUT PERFORMANCE HERE?
@@ -13,6 +12,7 @@ PUT PERFORMANCE HERE?
 Follow these instructions if you would like to quickly try out training B-KinD on CalMS21 and Human 3.6M and using discovered keypoints in downstream tasks. Please see these instructions on [setting up a new dataset](LINK TO LINE) to apply B-KinD on your own dataset.
 
 REQUIREMENTS (????)
+tested on torch 1.9.0
 
 ## CalMS21
 1. Download CalMS21 dataset: https://data.caltech.edu/records/1991
@@ -66,8 +66,8 @@ python train_video.py --config config/H36M.yaml
 ```
 python test_simplehuman36m.py [path_to_simplified_h36m_dataset**] --checkpoint [path_to_model_directory] --batch-size [N] --gpu 0 --nkpts [K] --resume [path_to_model_file]
 ```
-    *Note that [path_to_h36m_dataset] should end with 'processed' directory
-    **[path_to_simplified_h36m_dataset] should end with 'human_images' directory
+*Note that [path_to_h36m_dataset] should end with 'processed' directory
+**[path_to_simplified_h36m_dataset] should end with 'human_images' directory
 
 Regression results may vary since our method does not use any keypoint label as a supervision signal while training the keypoint discovery model.
 
@@ -77,6 +77,7 @@ Please follow the instructions below if you would like to train B-KinD on your o
 
 1. Extract frames and put all the frames in the "data/custom_dataset" directory
 2. Directory structure should follow the format below:
+```
 data/custom_dataset
     |---train
         |---video1
@@ -89,12 +90,13 @@ data/custom_dataset
         |---   .
     |--val
         |---videoN
+```
+*Image file names should be in an ascending order for sampling pair of images sequentially
 
-    - Image file names should be in an ascending order for sampling pair of images sequentially
-3. Set up the configuration of your data in ``config/own_dataset.yaml``
+3. Set up the configuration of your data in ``config/custom_dataset.yaml``
 4. Run command
 ```
-python train_video.py --config config/own_dataset.yaml
+python train_video.py --config config/custom_dataset.yaml
 ```
 5. To extract additional features from the discovered heatmap, run command (OR BEHAVIOR CLASSIFICATION DIRECTLY?)
 ```
