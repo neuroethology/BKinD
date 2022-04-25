@@ -1,0 +1,34 @@
+# Dataset
+dataset: CalMS21
+data: data/CalMS21/train  # Path to CalMS21 dataset: This should be the directory of the train split of the CalMS21 task 1 set with extracted images.
+
+# Training information
+workers: 4
+epochs: 15
+start_epoch: 0
+schedule: 15
+batch_size: 5
+lr: 0.001
+momentum: 0.9
+weight_decay: 0.0001
+print_freq: 10
+pretrained: True
+gpu: 0
+val_schedule: 20
+curriculum: 4
+
+# Path to save checkpoint
+checkpoint: checkpoint/CalMS21
+# Specify number of keypoints
+nkpts: 10
+
+# Hyperparameters
+image_size: 256
+frame_gap: 20
+bounding_box: False
+
+perc_weight: [100.0, 1.6, 2.3, 1.8, 2.8, 100.0]
+
+# Specify model path
+# resume: checkpoint/CalMS21
+evaluate: False

@@ -1,0 +1,35 @@
+# Dataset
+dataset: custom_dataset
+data: data/custom_dataset
+
+# Training information
+workers: 4
+epochs: 30
+start_epoch: 0
+schedule: 30
+batch_size: 16
+lr: 0.001
+momentum: 0.9
+weight_decay: 0.0001
+print_freq: 10
+pretrained: True
+gpu: 0
+val_schedule: 20
+curriculum: 4
+
+# Path to save checkpoint
+checkpoint: checkpoint/custom_dataset
+# Specify number of keypoints
+nkpts: 10
+
+# Hyperparameters
+image_size: 256
+frame_gap: 20
+bounding_box: False  # Only False allowed for the custom dataset
+
+perc_weight: [100.0, 1.6, 2.3, 1.8, 2.8, 100.0]
+
+
+# Specify model path
+# resume: checkpoint/CalMS21
+evaluate: False
