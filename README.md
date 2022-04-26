@@ -1,11 +1,14 @@
 # B-KinD: Self-supervised keypoint Discovery in Behavioral Videos
-Image
+
+<p align="center"><img src="figs/bkind_fig.png" width="80%" alt="" /></p> 
+
 
 Implementation from the paper:
 >Jennifer J. Sun*, Serim Ryou*, Roni Goldshmid, Brandon Weissbourd, John Dabiri, David J. Anderson, Ann Kennedy, Yisong Yue, Pietro Perona, [Self-Supervised Keypoint Discovery in Behavioral Videos](https://arxiv.org/pdf/2112.05121.pdf). In Conference on Computer Vision and Pattern Recognition (CVPR), 2022
 
 B-KinD discovers keypoints without the need for bounding box annotations or manual keypoint, and works on a range of organisms including mice, humans, flies, jellyfish and tree. The discovered keypoints and additional shape features are directly applicable to downstream tasks including behavior classification and pose regression!
 
+<p align="center"><img src="figs/bkind_gif.gif" width="60%" alt="" /></p> 
 
 # Quick Start
 Follow these instructions if you would like to quickly try out training B-KinD on CalMS21 and Human 3.6M and using discovered keypoints in downstream tasks. Please see these instructions on [setting up a new dataset](https://github.com/neuroethology/BKinD#your-own-dataset) to apply B-KinD on your own dataset.
@@ -14,8 +17,8 @@ Tested on torch 1.9.0.
 
 ## CalMS21
 1. Download CalMS21 dataset: https://data.caltech.edu/records/1991
-   1a) For training keypoint discovery (contains videos): task1_videos_seq.zip
-   1b) For training behavior classification (contains behavior annotations for evaluation): task1_classic_classification.zip
+   - For training keypoint discovery (contains videos): task1_videos_seq.zip
+   - For training behavior classification (contains behavior annotations for evaluation): task1_classic_classification.zip
 2. Extract frames from video
    -  Use the code provided by CalMS21 in seq_image_extraction.zip to extract images for all the downloaded seq files.
    - There should be one image directory for the train split, and one image directory for the test split.
@@ -24,7 +27,7 @@ Tested on torch 1.9.0.
 ```
 python train_video.py --config config/CalMS21.yaml
 ```
-This will take 1~2 days on a single GPU.
+This will take 1~2 days on a single GPU, the keypoints converge around epoch 10.
 
 ### Behavior classification
 1. One you are done training keypoint discovery model, evaluate it on the CalMS21 task 1 data on the default split.
@@ -71,7 +74,7 @@ Regression results may vary since our method does not use any keypoint label as 
 
 
 ## Your own dataset
-Please follow the instructions below if you would like to train B-KinD on your own video dataset!
+Please follow the instructions below if you would like to train B-KinD on your own video dataset! Note that the code currently does *not* support: tracking for multiple agents with similar appearance, videos with a lot of background motion, and/or videos with a lot of occlusion or self-occlusion. 
 
 1. Extract frames and put all the frames in the "data/custom_dataset" directory
 2. Directory structure should follow the format below:
