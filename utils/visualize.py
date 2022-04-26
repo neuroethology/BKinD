@@ -15,14 +15,14 @@ import cv2
 __all__ = ['show_heatmaps', 'show_img_with_heatmap', 'visualize_with_circles', 'save_images']
 
 
-def save_images(image, output, epoch, args):
+def save_images(image, output, epoch, args, curr_epoch):
     mean=[0.485, 0.456, 0.406]
     _mean = np.asarray(mean).reshape((3,1,1))
     std=[0.229, 0.224, 0.225]
     _std = np.asarray(std).reshape((3,1,1))
         
     # Image with keypoints
-    im_dir = os.path.join(args.checkpoint, 'samples') #, str(sample_id)+'.png')
+    im_dir = os.path.join(args.checkpoint, 'samples/epoch_' + str(curr_epoch)) #, str(sample_id)+'.png')
     
     if not os.path.isdir(im_dir):
         os.makedirs(im_dir)

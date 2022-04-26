@@ -199,7 +199,7 @@ def train(train_loader, model, loss_module, optimizer, epoch, args):
             progress.display(i)
             
             if args.visualize:
-                save_images(tr_inputs, output, epoch, args)
+                save_images(tr_inputs, output, epoch, args, epoch)
 
     return losses.avg
 
