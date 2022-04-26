@@ -6,13 +6,11 @@ Implementation from the paper:
 
 B-KinD discovers keypoints without the need for bounding box annotations or manual keypoint, and works on a range of organisms including mice, humans, flies, jellyfish and tree. The discovered keypoints and additional shape features are directly applicable to downstream tasks including behavior classification and pose regression!
 
-PUT PERFORMANCE HERE?
 
 # Quick Start
-Follow these instructions if you would like to quickly try out training B-KinD on CalMS21 and Human 3.6M and using discovered keypoints in downstream tasks. Please see these instructions on [setting up a new dataset](LINK TO LINE) to apply B-KinD on your own dataset.
+Follow these instructions if you would like to quickly try out training B-KinD on CalMS21 and Human 3.6M and using discovered keypoints in downstream tasks. Please see these instructions on [setting up a new dataset](https://github.com/neuroethology/BKinD#your-own-dataset) to apply B-KinD on your own dataset.
 
-REQUIREMENTS (????)
-tested on torch 1.9.0
+Tested on torch 1.9.0.
 
 ## CalMS21
 1. Download CalMS21 dataset: https://data.caltech.edu/records/1991
@@ -110,7 +108,12 @@ WHERE TO PUT "CODE PARTIALLY FROM IMAGENET TRAINING CODE & KEYPOINT DISCOVERY"
 
 Please refer to our paper for details and consider citing it if you find the code useful:
 ```
-
+@article{bkind2021,
+  title={Self-Supervised Keypoint Discovery in Behavioral Videos},
+  author={Sun, Jennifer J and Ryou, Serim and Goldshmid, Roni and Weissbourd, Brandon and Dabiri, John and Anderson, David J and Kennedy, Ann and Yue, Yisong and Perona, Pietro},
+  journal={arXiv preprint arXiv:2112.05121},
+  year={2021}
+}
 ```
 
 [1] Sun et al., The Multi-Agent Behavior Dataset: Mouse Dyadic Social Interactions. NeurIPS 2021.
