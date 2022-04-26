@@ -117,6 +117,8 @@ Please refer to our paper for details and consider citing it if you find the cod
 }
 ```
 
+Our code is available under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
 [1] Sun et al., The Multi-Agent Behavior Dataset: Mouse Dyadic Social Interactions. NeurIPS 2021.
 
 [2] Zhang et al., Unsupervised discovery of object landmarks as structural representations. CVPR 2018.
