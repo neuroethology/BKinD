@@ -99,13 +99,11 @@ data/custom_dataset
 ```
 python train_video.py --config config/custom_dataset.yaml
 ```
-5. To extract additional features from the discovered heatmap, run command (OR BEHAVIOR CLASSIFICATION DIRECTLY?)
+5. To extract additional features from the discovered heatmap, run command
 ```
 python extract_features.py --train_dir [images from train split] --test_dir [images from test split]
  --resume [checkpoint path] --output_dir [output directory to store keypoints]
 ```
-
-WHERE TO PUT "CODE PARTIALLY FROM IMAGENET TRAINING CODE & KEYPOINT DISCOVERY"
 
 ## License
 
