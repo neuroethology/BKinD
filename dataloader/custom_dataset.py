@@ -1,7 +1,12 @@
 from __future__ import print_function, absolute_import
 
+import os
 import torch
 import torch.utils.data as data
+from torchvision import transforms
+import torchvision.transforms.functional as TF
+
+from dataloader.data_utils import *
 
 def generate_pair_images(root, gap):
     images = []
@@ -14,7 +19,11 @@ def generate_pair_images(root, gap):
             im0 = os.path.join(img_root, img_list[index])
             im1 = os.path.join(img_root, img_list[index+gap])
 
-            item = [im0, im1]
+            # TODO: BBox fill ins
+            bbox0 = [0,0,0,0]
+            bbox1 = [0,0,0,0]
+
+            item = [im0, im1, bbox0, bbox1]
 
             images.append(item)
     
@@ -33,7 +42,7 @@ class CustomDataset(data.Dataset):
     """
 
     def __init__(self, root, transform=None, target_transform=None,
-                 loader=box_loader, image_size=[128, 128], frame_gap=20):
+                 loader=box_loader, image_size=[128, 128], frame_gap=20, crop_box = False):
 
         samples = generate_pair_images(root, gap=frame_gap)
 
@@ -52,6 +61,8 @@ class CustomDataset(data.Dataset):
         # Parameters for transformation
         self._image_size = image_size
 
+        self.crop_box = crop_box
+
 
     def __getitem__(self, index):
         """
@@ -65,15 +76,15 @@ class CustomDataset(data.Dataset):
 
         if self.crop_box:
             im0 = self.loader(img_path0, bbox0)
-            im1 = self.loader(img_path1, bbox0)
+            im1 = self.loader(img_path1, bbox1)
         else:
             im0 = self.loader(img_path0)
             im1 = self.loader(img_path1)
 
         height, width = self._image_size[:2]
 
-        image0 = torchvision.transforms.Resize((height, width))(im0)
-        image1 = torchvision.transforms.Resize((height, width))(im1)
+        image0 = transforms.Resize((height, width))(im0)
+        image1 = transforms.Resize((height, width))(im1)
 
         # Create 3 rotations
         deg = 90

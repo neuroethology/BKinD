@@ -5,6 +5,7 @@ import torchvision.transforms as transforms
 
 from dataloader import h36m_dataset as h36m
 from dataloader import mouse_dataset as mouse
+from dataloader import custom_dataset 
 
 from dataloader import data_utils
 
@@ -75,7 +76,7 @@ def load_dataloader(args):
                               image_size=[args.image_size, args.image_size],
                               loader=loader)
 
-    elif args.dataset == 'own_dataset':
+    elif args.dataset == 'custom_dataset':
         traindir = os.path.join(args.data, 'train')
         valdir = os.path.join(args.data, 'val')
 
