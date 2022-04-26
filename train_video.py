@@ -116,8 +116,7 @@ def main_worker(gpu, ngpus_per_node, args):
         num_workers=args.workers, pin_memory=True)
 
     if args.evaluate:
-        epoch = 100
-        validate(val_loader, model, loss_module, epoch, args)
+        validate(val_loader, model, loss_module, 0, args)
         return
 
     is_best = True
@@ -215,8 +214,6 @@ def validate(val_loader, model, loss_module, epoch, args):
     # switch to evaluate mode
     model.eval()
 
-    counter = 0
-
     with torch.no_grad():
         end = time.time()
         for i, images in enumerate(val_loader):
@@ -241,10 +238,6 @@ def validate(val_loader, model, loss_module, epoch, args):
             # measure elapsed time
             batch_time.update(time.time() - end)
             end = time.time()
-
-            counter = counter + 1
-            if counter >=600:
-                break
 
             if i % args.print_freq == 0:
                 progress.display(i)
