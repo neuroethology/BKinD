@@ -10,6 +10,10 @@ B-KinD discovers keypoints without the need for bounding box annotations or manu
 
 <p align="center"><img src="figs/bkind_gif.gif" width="60%" alt="" /></p> 
 
+Features in progress (let us know in the issues if there's anything else you'd like to see!):
+- Support for keypoint detection on bounding boxes
+- Support for multiple similar agents
+
 # Quick Start
 Follow these instructions if you would like to quickly try out training B-KinD on CalMS21 and Human 3.6M and using discovered keypoints in downstream tasks. Please see these instructions on [setting up a new dataset](https://github.com/neuroethology/BKinD#your-own-dataset) to apply B-KinD on your own dataset.
 
