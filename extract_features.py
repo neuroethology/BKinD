@@ -35,8 +35,8 @@ from scipy.io import savemat
 from model.unsupervised_model import Model as orgModel
 from model.kpt_detector import Model
 
-
 from PIL import Image
+import seaborn as sns
 
 from scipy.spatial import distance
 
@@ -44,7 +44,7 @@ import csv
 
 
 # resume, checkpoint, num keypoints
-def load_model(resume, output_dir, num_keypoints = 10):
+def load_model(resume, output_dir, image_size=256, num_keypoints = 10):
 
     model = Model(num_keypoints)
 
@@ -55,15 +55,16 @@ def load_model(resume, output_dir, num_keypoints = 10):
     save_dir = os.path.join(output_dir, 'keypoints_confidence')
 
     if not os.path.isdir(save_dir):
-        os.mkdir(save_dir)
+        os.makedirs(save_dir)
         os.mkdir(os.path.join(save_dir, 'train'))
         os.mkdir(os.path.join(save_dir, 'test'))
 
     # Map model to be loaded to specified single gpu.
     loc = 'cuda:{}'.format(0)
     checkpoint = torch.load(resume, map_location=loc)
-
-    org_model = orgModel(num_keypoints)
+    
+    output_shape = (int(image_size/4), int(image_size/4))
+    org_model = orgModel(num_keypoints, output_shape=output_shape)
 
     org_model.load_state_dict(checkpoint['state_dict'])
     org_model_dict = org_model.state_dict()
@@ -146,11 +147,12 @@ ap.add_argument("--test_dir", help="Path to test directory with directory of ima
 ap.add_argument("--resume", help="Path to checkpoint to resume", type = str)
 ap.add_argument("--output_dir", help="Output directory to store the keypoints", type = str)
 ap.add_argument("--imsize", default=256, help="Training image size", type=int)
+ap.add_argument("--nkpts", default=10, help="Number of discovered keypoints", type=int)
 
 args = vars(ap.parse_args())
 
 
-model, save_dir = load_model(args['resume'], args['output_dir'])
+model, save_dir = load_model(args['resume'], args['output_dir'], args['imsize'], args['nkpts'])
 
 # input train & test directory
 train_dir = args['train_dir']
@@ -173,8 +175,16 @@ for vid in sorted(os.listdir(train_dir)):
     vid_name = vid
 
     current_directory = os.path.join(train_dir, vid)
-
-    for images in sorted(os.listdir(current_directory)):
+    
+    save_img_dir = os.path.join(save_dir, 'train_samples')
+    num_imgs = len(os.listdir(current_directory))
+    sample_ids = np.random.permutation(num_imgs)
+    sample_ids = sample_ids[:min(100, num_imgs)]
+    
+    if not os.path.isdir(save_img_dir):
+        os.makedirs(save_img_dir)
+    
+    for ix, images in enumerate(sorted(os.listdir(current_directory))):
 
         draw_frame = cv2.cvtColor(cv2.imread(os.path.join(current_directory, images),
              cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
@@ -183,35 +193,29 @@ for vid in sorted(os.listdir(train_dir)):
         input_tensor = get_image_tensor(draw_frame)
 
         _, plot_keypoints, confidence, covs = compute_keypoints(input_tensor, model, width=width, height=height)
-
-
-        colors = [[255,0,0], [0,255,0], [0,0,255], [255,255,0], [0,255,255], [255,0,255],  # yellow, cyan, pink
-                  [255,255,255], [0,0,0], [125,125,0], [125,0,125], [0,125,125], [74,29,0],  #w b, gray-green, violet, turquiose
-                  [23,87,120], [59,100,3], [130,150,10], [40,29,100], [54,12,90], [53,123,40],
-                  [50,189,34], [230,142,10]]
+        
+        if ix == 0:
+            values = sns.color_palette("husl", len(plot_keypoints))
+            colors = []
+            for i in range(len(values)):
+                color = [int(values[i][0]*255), int(values[i][1]*255), int(values[i][2]*255)]
+                colors.append(color)
 
         image = draw_frame
-
-        ## For visualization
-        # for c, j in enumerate(range(len(plot_keypoints))):
-        # 
-        #     item = plot_keypoints[j]
-        # 
-        #     image = cv2.circle(image, (item[1], item[0]),
-        #         radius=2, color=colors[c], thickness = 2)
-        #
-        # cv2.imshow("Keypoints", image)
+        
+        # For visualization (randomly sample 100 images)
+        if ix in sample_ids:
+            for c, j in enumerate(range(len(plot_keypoints))):
+                item = plot_keypoints[j]
+                image = cv2.circle(image, (item[1], item[0]),
+                    radius=2, color=colors[c], thickness = 2)
+                
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            cv2.imwrite(os.path.join(save_img_dir, 'image_'+str(ix)+'.png'), image)
 
         conf_array.append(confidence)
         keypoint_array.append(plot_keypoints)
         covs_array.append(covs)
-
-        # result.write(image)
-
-        # key = cv2.waitKey(1) & 0xFF
-        ## If q is pressed, then quit the loop.
-        # if key == ord("q"):
-        #     break
 
     print(np.array(keypoint_array).shape, np.array(conf_array).shape, np.array(covs_array).shape)
 
@@ -233,8 +237,16 @@ for vid in sorted(os.listdir(test_dir)):
     vid_name = vid
 
     current_directory = os.path.join(test_dir, vid)
+    
+    save_img_dir = os.path.join(save_dir, 'test_samples')
+    num_imgs = len(os.listdir(current_directory))
+    sample_ids = np.random.permutation(num_imgs)
+    sample_ids = sample_ids[:min(100, num_imgs)]
+    
+    if not os.path.isdir(save_img_dir):
+        os.makedirs(save_img_dir)
 
-    for images in sorted(os.listdir(current_directory)):
+    for ix, images in enumerate(sorted(os.listdir(current_directory))):
 
         draw_frame = cv2.cvtColor(cv2.imread(os.path.join(current_directory, images), cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
         height, width, _ = draw_frame.shape
@@ -242,7 +254,17 @@ for vid in sorted(os.listdir(test_dir)):
         input_tensor = get_image_tensor(draw_frame)
 
         _, plot_keypoints, confidence, covs = compute_keypoints(input_tensor, model, width=width, height=height)
-
+        
+        # For visualization (randomly sample 100 images)
+        if ix in sample_ids:
+            for c, j in enumerate(range(len(plot_keypoints))):
+                item = plot_keypoints[j]
+                image = cv2.circle(image, (item[1], item[0]),
+                    radius=2, color=colors[c], thickness = 2)
+            
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            cv2.imwrite(os.path.join(save_img_dir, 'image_'+str(ix)+'.png'), image)
+        
         conf_array.append(confidence)
         keypoint_array.append(plot_keypoints)
         covs_array.append(covs)

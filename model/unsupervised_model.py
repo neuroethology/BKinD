@@ -228,10 +228,11 @@ class Model(nn.Module):
             gmtr_kpt_conds_3 = self._kptTomap(gmtr_u_x_3, gmtr_u_y_3, H=out_h, W=out_w, inv_std=0.001, normalize=False)
 
             return (recon, (tr_u_x, tr_u_y), (tr_kpt_conds[-1], gmtr_kpt_conds_1, gmtr_kpt_conds_2, gmtr_kpt_conds_3),
-             (tr_kpt_out[-1], gmtr_kpt_out[-1]), (u_x, u_y), (gmtr_u_x, gmtr_u_y, gmtr_u_x_2, gmtr_u_y_2, gmtr_u_x_3, gmtr_u_y_3))
+             (tr_kpt_out[-1], gmtr_kpt_out[-1]), (u_x, u_y), (gmtr_u_x, gmtr_u_y, gmtr_u_x_2, gmtr_u_y_2, gmtr_u_x_3, gmtr_u_y_3),
+             tr_confidence)
         
         
-        return recon, (tr_u_x, tr_u_y), tr_kpt_conds[-1], tr_kpt_out[-1], (u_x, u_y)
+        return recon, (tr_u_x, tr_u_y), tr_kpt_conds[-1], tr_kpt_out[-1], (u_x, u_y), tr_confidence
     
         
     def _mapTokpt(self, heatmap):

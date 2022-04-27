@@ -36,15 +36,17 @@ def save_images(image, output, epoch, args, curr_epoch):
     recon = output[0]
     if epoch < args.curriculum:
         heatmap = output[2]
+        confidence = output[5]
     else:
         heatmap = output[2][0]
+        confidence = output[6]
         
     # keypoints
     xy = torch.stack((kps[0], kps[1]), dim=2)
     
     for i, ix in enumerate(sample_ids):
         # Visualize keypoints
-        im_with_pts = visualize_with_circles(im[ix], xy[ix].data.cpu().numpy()+1,
+        im_with_pts = visualize_with_circles(im[ix], xy[ix].data.cpu().numpy()+1, confidence[ix],
                                              mean=mean, std=std)
         im_with_pts = im_with_pts.astype('uint8')
         im_with_pts = cv2.cvtColor(im_with_pts, cv2.COLOR_RGB2BGR)
@@ -107,7 +109,7 @@ def show_heatmaps(images, Mean=(2, 2, 2), Std=(0.5,0.5,0.5)):
     return images[0]  
 
         
-def visualize_with_circles(image, pts, scale=None, mean=[0.5,0.5,0.5], std=[0.2,0.2,0.2]):
+def visualize_with_circles(image, pts, confidence=None, scale=None, mean=[0.5,0.5,0.5], std=[0.2,0.2,0.2]):
     _std = np.asarray(std).reshape((3,1,1)); _mean = np.asarray(mean).reshape((3,1,1))
     image = (image * _std + _mean) * 255
     image = image.transpose((1,2,0))
@@ -134,7 +136,11 @@ def visualize_with_circles(image, pts, scale=None, mean=[0.5,0.5,0.5], std=[0.2,
         pt_y = int(pts[i,1]*scale_y)
         pt_x = int(pts[i,0]*scale_x)
         
-        image = cv2.circle(image, (pt_x, pt_y), circle_size, tuple(colors[i]), -1)
+        if (confidence is not None) and confidence[i] < 0.01:
+            # background threshold for visualization is set to 0.01
+            image = cv2.circle(image, (pt_x, pt_y), int(circle_size*0.5), tuple(colors[i]), -1)
+        else:
+            image = cv2.circle(image, (pt_x, pt_y), circle_size, tuple(colors[i]), -1)
         
     return image
 

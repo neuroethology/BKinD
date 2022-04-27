@@ -14,13 +14,12 @@ import itertools
 
     
 class Model(nn.Module):
-    def __init__(self, n_kpts=10, pretrained=True, cls_kpts=10):
+    def __init__(self, n_kpts=10, pretrained=True, output_shape=(64, 64)):
         super(Model, self).__init__()
         self.K = n_kpts
-        self.K_cls = cls_kpts
         
         channel_settings = [2048, 1024, 512, 256]
-        output_shape = (64, 64)  #(56, 56), (28,28)
+        output_shape = output_shape
         self.kptNet = globalNet(channel_settings, output_shape, n_kpts)
         self.ch_softmax = nn.Softmax(dim=2)
         self.sigmoid = nn.Sigmoid()
