@@ -1,12 +1,8 @@
 import torch
 import torch.nn as nn
-from torch.autograd import Variable
 import torch.nn.functional as F
 
 import math
-
-import torchvision.transforms.functional as TF
-
 
 
 def rot_img(x, rot_mat):

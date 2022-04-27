@@ -1,46 +1,24 @@
 import argparse
-import datetime
-import time
 import cv2
-
-import skimage
-import skimage.transform
-from skimage.metrics import structural_similarity as ssim
-
-from scipy.ndimage.filters import gaussian_filter
 
 import numpy as np
 
 import os
 
-import scipy
 import torch
-import torch.nn as nn
 import torch.nn.parallel
-import torch.backends.cudnn as cudnn
-import torch.distributed as dist
 import torch.optim
-import torch.multiprocessing as mp
 import torch.utils.data
 import torch.utils.data.distributed
 import torchvision.transforms as transforms
-import torchvision.datasets as datasets
-import torchvision.models as models
-import torch.nn.functional as F
 
 import torchvision
-
-from scipy.io import savemat
 
 from model.unsupervised_model import Model as orgModel
 from model.kpt_detector import Model
 
 from PIL import Image
 import seaborn as sns
-
-from scipy.spatial import distance
-
-import csv
 
 
 # resume, checkpoint, num keypoints

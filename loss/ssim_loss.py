@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 
-from typing import List, Optional, Tuple, Union, Iterable
+from typing import Tuple, Union, Iterable
 
 from piq.functional import gaussian_filter
 

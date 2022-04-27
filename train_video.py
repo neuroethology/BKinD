@@ -1,20 +1,11 @@
-import argparse
-import os
-import random
 import time
 import warnings
 
 import torch
-import torch.nn as nn
 import torch.nn.parallel
 import torch.backends.cudnn as cudnn
-import torch.distributed as dist
 import torch.optim
 import torch.utils.data
-import torchvision.transforms as transforms
-import torchvision.datasets as datasets
-import torchvision.models as models
-import torch.nn.functional as F
 
 from config.config_reader import parse_args, create_parser
 
@@ -24,13 +15,7 @@ from model.unsupervised_model import Model
 
 from loss.compute_loss import *
 
-from utils import Logger, mkdir_p, visualize_with_circles, save_images
-import numpy as np
-
-import cv2
-from PIL import Image
-import math
-
+from utils import Logger, mkdir_p, save_images
 from utils.model_utils import *
 
 

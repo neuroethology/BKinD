@@ -2,7 +2,6 @@ import json
 import os
 import numpy as np 
 import argparse
-import openpyxl
 
 '''
 Script for converting CalMS21 .json files into .npy files, with discovered keypoints.

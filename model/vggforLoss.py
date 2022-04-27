@@ -1,9 +1,7 @@
 # Code from https://github.com/pytorch/vision/blob/master/torchvision/models/vgg.py
 # Modified to use perceptual loss
 
-import torch
 import torch.nn as nn
-from torch.autograd import Variable
 import torch.nn.functional as F
 
 try:

@@ -3,13 +3,10 @@ import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torchvision
-import torchvision.transforms as transforms
 import numpy as np
-from .misc import *   
 
 import seaborn as sns
 
-from PIL import Image, ImageDraw
 import cv2
 
 __all__ = ['show_heatmaps', 'show_img_with_heatmap', 'visualize_with_circles', 'save_images']

@@ -1,10 +1,3 @@
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-
-import numpy as np
-import math
-
 import sklearn.linear_model as linear_model    
 
 def linearRegressor(pred, gt, test, n_kpts=10, reg_pts=5):

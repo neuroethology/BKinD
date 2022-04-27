@@ -1,14 +1,10 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
-import torchvision.models as models
-
-from .resnet_updated import conv3x3, conv1x1
+from .resnet_updated import conv3x3
 from .resnet_updated import resnetbank50all as resnetbank50
 from .globalNet import globalNet
 
-import numpy as np
 import math
 
 
