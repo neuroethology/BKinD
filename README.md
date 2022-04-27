@@ -10,7 +10,7 @@ B-KinD discovers keypoints without the need for bounding box annotations or manu
 
 <p align="center"><img src="figs/bkind_gif.gif" width="60%" alt="" /></p> 
 
-Features in progress (let us know in the issues if there's anything else you'd like to see!):
+Our code currently supports running keypoint discovery on your own videos, where there's relatively stationay background and no significant occlusion. Features in progress (let us know in the issues if there's anything else you'd like to see!):
 - Support for keypoint detection on bounding boxes
 - Support for multiple similar agents
 
@@ -80,7 +80,10 @@ Regression results may vary since our method does not use any keypoint label as 
 ## Your own dataset
 Please follow the instructions below if you would like to train B-KinD on your own video dataset! Note that the code currently does *not* support: tracking for multiple agents with similar appearance, videos with a lot of background motion, and/or videos with a lot of occlusion or self-occlusion. 
 
-1. Extract frames and put all the frames in the "data/custom_dataset" directory
+1. Extract frames and put all the frames in the "data/custom_dataset" directory. There are many ways to extract frames - for example, using ffmpeg:
+```
+ffmpeg -i [input_video_name] [output_directory]/images_%08d.png
+```
 2. Directory structure should follow the format below:
 ```
 data/custom_dataset
