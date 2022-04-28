@@ -11,7 +11,7 @@ B-KinD discovers keypoints without the need for bounding box annotations or manu
 <p align="center"><img src="figs/bkind_gif.gif" width="60%" alt="" /></p> 
 
 Our code currently supports running keypoint discovery on your own videos, where there's relatively stationay background and no significant occlusion. Features in progress (let us know in the issues if there's anything else you'd like to see!):
-- Support for keypoint detection on bounding boxes
+- Support for keypoint discovery on bounding boxes
 - Support for multiple similar agents
 
 # Quick Start
