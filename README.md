@@ -109,7 +109,7 @@ python train_video.py --config config/custom_dataset.yaml
 5. To extract additional features from the discovered heatmap, run command
 ```
 python extract_features.py --train_dir [images from train split] --test_dir [images from test split]
- --resume [checkpoint path] --output_dir [output directory to store keypoints]
+ --resume [checkpoint path] --output_dir [output directory to store keypoints] --imsize [training image size] --nkpts [number of discovered keypoints]
 ```
 
 ## License
