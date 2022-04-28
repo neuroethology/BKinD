@@ -29,7 +29,7 @@ Tested on torch 1.9.0.
      Within each directory, there should then be directories of images corresponding to each video.
 3. Run command
 ```
-python train_video.py --config config/CalMS21.yaml
+python train_video.py --config config/CalMS21.yaml 
 ```
 This will take 1~2 days on a single GPU, the keypoints converge around epoch 10.
 
@@ -106,6 +106,8 @@ data/custom_dataset
 ```
 python train_video.py --config config/custom_dataset.yaml
 ```
+Use the ```--visualize``` flag to visualize examples during training. This can be helpful to see when the keypoints have converged. 
+
 5. To extract additional features from the discovered heatmap, run command
 ```
 python extract_features.py --train_dir [images from train split] --test_dir [images from test split]
