@@ -127,7 +127,7 @@ def visualize_with_circles(image, pts, confidence=None, scale=None, mean=[0.5,0.
         
     scale_x = (image.shape[1] / 2.0)
     scale_y = (image.shape[0] / 2.0)
-    circle_size = int(round(image.shape[1] / 35))
+    circle_size = int(round(image.shape[1] / 60))
     
     for i in range(0,pts.shape[0]):
         pt_y = int(pts[i,1]*scale_y)
