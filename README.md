@@ -80,6 +80,8 @@ Regression results may vary since our method does not use any keypoint label as 
 ## Your own dataset
 Please follow the instructions below if you would like to train B-KinD on your own video dataset! Note that the code currently does *not* support: tracking for multiple agents with similar appearance, videos with a lot of background motion, and/or videos with a lot of occlusion or self-occlusion. 
 
+Note that one important consideration is the ```frame_gap``` parameter in the config directory, you want to pick a gap where the agent has moved a bit, but not too much (usually this is under 1 second, we used frame gap corresponding to 0.2s in our work). Also adjust ```nkpts``` to the number of parts you want to track. 
+
 1. Extract frames and put all the frames in the "data/custom_dataset" directory. There are many ways to extract frames - for example, using ffmpeg:
 ```
 ffmpeg -i [input_video_name] [output_directory]/images_%08d.png
