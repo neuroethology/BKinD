@@ -1,5 +1,7 @@
 # B-KinD: Self-supervised keypoint Discovery in Behavioral Videos
 
+We will run B-KinD on your videos by request! Please fill out [https://forms.gle/k5gwNxws8xMEEzUe6](https://forms.gle/k5gwNxws8xMEEzUe6).
+
 <p align="center"><img src="figs/bkind_fig.png" width="80%" alt="" /></p> 
 
 
