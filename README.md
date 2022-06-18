@@ -19,7 +19,19 @@ Our code currently supports running keypoint discovery on your own videos, where
 # Quick Start
 Follow these instructions if you would like to quickly try out training B-KinD on CalMS21 and Human 3.6M and using discovered keypoints in downstream tasks. Please see these instructions on [setting up a new dataset](https://github.com/neuroethology/BKinD#your-own-dataset) to apply B-KinD on your own dataset.
 
-Tested on torch 1.9.0.
+To set up the environment, you can use the provided yml file with ```conda env create -f bkind_env.yml```
+
+Alternatively to using the yml file, here are all the install commands we used (you may need to change the cudatoolkit version depending on your GPU):
+
+```conda install pytorch torchvision cudatoolkit=11.3 -c pytorch```
+
+```conda install -c anaconda pyyaml```
+
+```conda install -c anaconda h5py```
+
+```pip install piq```
+
+```pip install opencv-python```
 
 ## CalMS21
 1. Download CalMS21 dataset: https://data.caltech.edu/records/1991
