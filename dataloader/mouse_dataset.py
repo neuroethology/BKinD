@@ -22,7 +22,7 @@ def generate_pair_images(root, gap=6, win_gap = 7):
 
     for video in sorted(os.listdir(root)):
 
-        if video in no_cable_list:
+        if video[:8] in no_cable_list:
             img_root = os.path.join(root, video)
             img_list = sorted(os.listdir(img_root))
             for index in range(0, len(img_list) - gap, win_gap):
