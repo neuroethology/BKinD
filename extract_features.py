@@ -131,6 +131,7 @@ ap.add_argument("--resume", help="Path to checkpoint to resume", type = str)
 ap.add_argument("--output_dir", help="Output directory to store the keypoints", type = str)
 ap.add_argument("--imsize", default=256, help="Training image size", type=int)
 ap.add_argument("--nkpts", default=10, help="Number of discovered keypoints", type=int)
+ap.add_argument("--conf_threshold", default=0.1, help="Confidence threshold for plotting less confident points", type=float)
 
 args = vars(ap.parse_args())
 
@@ -188,8 +189,12 @@ for vid in sorted(os.listdir(train_dir)):
         if ix in sample_ids:
             for c, j in enumerate(range(len(plot_keypoints))):
                 item = plot_keypoints[j]
-                image = cv2.circle(image, (item[1], item[0]),
-                    radius=2, color=colors[c], thickness = 2)
+                if confidence[j] > args['conf_threshold']:
+                    image = cv2.circle(image, (item[1], item[0]),
+                        radius=3, color=colors[c], thickness = 3)
+                else:                
+                    image = cv2.circle(image, (item[1], item[0]),
+                        radius=2, color=colors[c], thickness = 1)
                 
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
             cv2.imwrite(os.path.join(save_img_dir, 'image_'+str(ix)+'.png'), image)
@@ -249,9 +254,12 @@ for vid in sorted(os.listdir(test_dir)):
         if ix in sample_ids:
             for c, j in enumerate(range(len(plot_keypoints))):
                 item = plot_keypoints[j]
-                image = cv2.circle(image, (item[1], item[0]),
-                    radius=2, color=colors[c], thickness = 2)
-                
+                if confidence[j] > args['conf_threshold']:
+                    image = cv2.circle(image, (item[1], item[0]),
+                        radius=3, color=colors[c], thickness = 2)
+                else:                
+                    image = cv2.circle(image, (item[1], item[0]),
+                        radius=2, color=colors[c], thickness = 1)
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
             cv2.imwrite(os.path.join(save_img_dir, 'image_'+str(ix)+'.png'), image)
 
