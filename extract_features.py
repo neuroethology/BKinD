@@ -256,7 +256,7 @@ for vid in sorted(os.listdir(test_dir)):
                 item = plot_keypoints[j]
                 if confidence[j] > args['conf_threshold']:
                     image = cv2.circle(image, (item[1], item[0]),
-                        radius=3, color=colors[c], thickness = 2)
+                        radius=3, color=colors[c], thickness = 3)
                 else:                
                     image = cv2.circle(image, (item[1], item[0]),
                         radius=2, color=colors[c], thickness = 1)
