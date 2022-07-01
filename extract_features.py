@@ -21,6 +21,12 @@ from PIL import Image
 import seaborn as sns
 
 
+def pil_loader(path):
+    # open path as file to avoid ResourceWarning (https://github.com/python-pillow/Pillow/issues/835)
+    with open(path, 'rb') as f:
+        img = Image.open(f)
+        return img.convert('RGB')
+
 # resume, checkpoint, num keypoints
 def load_model(resume, output_dir, image_size=256, num_keypoints = 10):
 
@@ -55,7 +61,8 @@ def load_model(resume, output_dir, image_size=256, num_keypoints = 10):
     print("=> loaded checkpoint '{}' (epoch {})"
           .format(resume, checkpoint['epoch']))
 
-    model.eval()
+    # model.eval()
+    # org_model.eval()
 
     return model, save_dir
 
@@ -81,7 +88,6 @@ def get_image_tensor(frame, size = 256):
 
     current_tensor = to_tensor(current)
 
-
     return current_tensor.unsqueeze(0)
 
 
@@ -93,7 +99,6 @@ def compute_keypoints(inputs, model, width = 1024, height = 570):
     inputs = inputs.to(loc)
 
     output = model(inputs)
-
 
     xy = torch.stack((output[0][0], output[0][1]), dim=2).detach().cpu().numpy()[0]+1
 
@@ -164,9 +169,7 @@ for vid in sorted(os.listdir(train_dir)):
     
     for ix, images in enumerate(sorted(os.listdir(current_directory))):
 
-        draw_frame = cv2.cvtColor(cv2.imread(os.path.join(current_directory, images),
-             cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
-        
+        draw_frame = cv2.cvtColor(cv2.imread(os.path.join(current_directory, images), cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)        
         height, width, _ = draw_frame.shape
         input_tensor = get_image_tensor(draw_frame)
 
@@ -202,6 +205,7 @@ for vid in sorted(os.listdir(train_dir)):
             covs = covs_array)
 
 
+counter = 0
 # Extract for test dir
 for vid in sorted(os.listdir(test_dir)):
     print(counter, vid)
@@ -223,15 +227,23 @@ for vid in sorted(os.listdir(test_dir)):
     
     if not os.path.isdir(save_img_dir):
         os.makedirs(save_img_dir)
-
+    
     for ix, images in enumerate(sorted(os.listdir(current_directory))):
 
-        draw_frame = cv2.cvtColor(cv2.imread(os.path.join(current_directory, images), cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
+        draw_frame = cv2.cvtColor(cv2.imread(os.path.join(current_directory, images), cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)        
         height, width, _ = draw_frame.shape
-        
         input_tensor = get_image_tensor(draw_frame)
 
         _, plot_keypoints, confidence, covs = compute_keypoints(input_tensor, model, width=width, height=height)
+        
+        if ix == 0:
+            values = sns.color_palette("husl", len(plot_keypoints))
+            colors = []
+            for i in range(len(values)):
+                color = [int(values[i][0]*255), int(values[i][1]*255), int(values[i][2]*255)]
+                colors.append(color)
+
+        image = draw_frame
         
         # For visualization (randomly sample 100 images)
         if ix in sample_ids:
@@ -239,14 +251,13 @@ for vid in sorted(os.listdir(test_dir)):
                 item = plot_keypoints[j]
                 image = cv2.circle(image, (item[1], item[0]),
                     radius=2, color=colors[c], thickness = 2)
-            
+                
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
             cv2.imwrite(os.path.join(save_img_dir, 'image_'+str(ix)+'.png'), image)
-        
+
         conf_array.append(confidence)
         keypoint_array.append(plot_keypoints)
         covs_array.append(covs)
-
 
     print(np.array(keypoint_array).shape, np.array(conf_array).shape, np.array(covs_array).shape)
 
