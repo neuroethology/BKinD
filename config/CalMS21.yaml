@@ -24,7 +24,7 @@ nkpts: 10
 
 # Hyperparameters
 image_size: 256
-frame_gap: 20
+frame_gap: 6
 bounding_box: False
 
 perc_weight: [100.0, 1.6, 2.3, 1.8, 2.8, 100.0]
