@@ -15,7 +15,7 @@ def generate_pair_images(root, gap):
     for video in sorted(os.listdir(root)):
         img_root = os.path.join(root, video)
         img_list = sorted(os.listdir(img_root))
-        for index in range(0, len(img_list) - gap, gap):
+        for index in range(0, len(img_list) - gap, gap//10+1):
             im0 = os.path.join(img_root, img_list[index])
             im1 = os.path.join(img_root, img_list[index+gap])
 
